@@ -1,0 +1,201 @@
+relations:
+  # Workspaces hub
+  - from_table: workspaces_latest
+    from_column: workspace_id
+    to_table: usage
+    to_column: workspace_id
+    description: "Usage records belong to workspaces."
+
+  - from_table: workspaces_latest
+    from_column: workspace_id
+    to_table: clusters
+    to_column: workspace_id
+    description: "Clusters are created in workspaces."
+
+  - from_table: workspaces_latest
+    from_column: workspace_id
+    to_table: node_timeline
+    to_column: workspace_id
+    description: "Node-level metrics can be grouped per workspace."
+
+  - from_table: workspaces_latest
+    from_column: workspace_id
+    to_table: warehouse_events
+    to_column: workspace_id
+    description: "Warehouse lifecycle events per workspace."
+
+  - from_table: workspaces_latest
+    from_column: workspace_id
+    to_table: jobs
+    to_column: workspace_id
+    description: "Jobs belong to workspaces."
+
+  - from_table: workspaces_latest
+    from_column: workspace_id
+    to_table: job_run_timeline
+    to_column: workspace_id
+    description: "Job runs per workspace."
+
+  - from_table: workspaces_latest
+    from_column: workspace_id
+    to_table: job_task_run_timeline
+    to_column: workspace_id
+    description: "Job task runs per workspace."
+
+  - from_table: workspaces_latest
+    from_column: workspace_id
+    to_table: pipelines
+    to_column: workspace_id
+    description: "Pipelines belong to workspaces."
+
+  - from_table: workspaces_latest
+    from_column: workspace_id
+    to_table: pipeline_update_timeline
+    to_column: workspace_id
+    description: "Pipeline updates per workspace."
+
+  - from_table: workspaces_latest
+    from_column: workspace_id
+    to_table: experiments_latest
+    to_column: workspace_id
+    description: "MLflow experiments per workspace."
+
+  - from_table: workspaces_latest
+    from_column: workspace_id
+    to_table: runs_latest
+    to_column: workspace_id
+    description: "MLflow runs per workspace."
+
+  - from_table: workspaces_latest
+    from_column: workspace_id
+    to_table: run_metrics_history
+    to_column: workspace_id
+    description: "MLflow metric histories per workspace."
+
+  - from_table: workspaces_latest
+    from_column: workspace_id
+    to_table: history
+    to_column: workspace_id
+    description: "Query history per workspace."
+
+  - from_table: workspaces_latest
+    from_column: workspace_id
+    to_table: assistant_events
+    to_column: workspace_id
+    description: "Assistant events per workspace."
+
+  - from_table: workspaces_latest
+    from_column: workspace_id
+    to_table: audit
+    to_column: workspace_id
+    description: "Audit logs per workspace."
+
+  - from_table: workspaces_latest
+    from_column: workspace_id
+    to_table: outbound_network
+    to_column: workspace_id
+    description: "Outbound network denials per workspace."
+
+  - from_table: workspaces_latest
+    from_column: workspace_id
+    to_table: inbound_network
+    to_column: workspace_id
+    description: "Inbound network denials per workspace."
+
+  # Compute
+  - from_table: clusters
+    from_column: cluster_id
+    to_table: node_timeline
+    to_column: cluster_id
+    description: "Node metrics per cluster."
+
+  - from_table: node_timeline
+    from_column: node_type
+    to_table: node_types
+    to_column: node_type
+    description: "Node utilization tied to node hardware."
+
+  # Billing
+  - from_table: usage
+    from_column: account_id
+    to_table: list_price
+    to_column: account_id
+    description: "Usage can be enriched with list_prices by account."
+
+  - from_table: usage
+    from_column: sku_name
+    to_table: list_price
+    to_column: sku_name
+    description: "Usage and list_prices joined via SKU name (plus time window)."
+
+  # Jobs
+  - from_table: jobs
+    from_column: job_id
+    to_table: job_tasks
+    to_column: job_id
+    description: "Tasks are defined under jobs."
+
+  - from_table: jobs
+    from_column: job_id
+    to_table: job_run_timeline
+    to_column: job_id
+    description: "Job runs reference jobs via job_id."
+
+  - from_table: job_run_timeline
+    from_column: run_id
+    to_table: job_task_run_timeline
+    to_column: job_run_id
+    description: "Task runs belong to job runs via job_run_id."
+
+  - from_table: job_task_run_timeline
+    from_column: task_key
+    to_table: job_tasks
+    to_column: task_key
+    description: "Task run metrics joined to task definitions via task_key."
+
+  # Pipelines
+  - from_table: pipelines
+    from_column: pipeline_id
+    to_table: pipeline_update_timeline
+    to_column: pipeline_id
+    description: "Pipeline updates reference pipelines via pipeline_id."
+
+  # MLflow
+  - from_table: runs_latest
+    from_column: experiment_id
+    to_table: experiments_latest
+    to_column: experiment_id
+    description: "Runs belong to experiments."
+
+  - from_table: run_metrics_history
+    from_column: run_id
+    to_table: runs_latest
+    to_column: run_id
+    description: "Metric history belongs to runs via run_id."
+
+  # Lineage ↔ Query history
+  - from_table: table_lineage
+    from_column: statement_id
+    to_table: history
+    to_column: cache_origin_statement_id
+    description: "Table lineage joined to query history, including cached queries."
+
+  - from_table: column_lineage
+    from_column: statement_id
+    to_table: history
+    to_column: cache_origin_statement_id
+    description: "Column lineage joined to query history."
+
+  # Serving
+  - from_table: endpoint_usage
+    from_column: served_entity_id
+    to_table: served_entities
+    to_column: served_entity_id
+    description: "Endpoint usage joined to served entities/endpoints."
+
+  # Predictive optimization
+  - from_table: predictive_optimization_operations_history
+    from_column: account_id
+    to_table: usage
+    to_column: account_id
+    description: "Predictive optimization estimated DBUs compared against overall usage."

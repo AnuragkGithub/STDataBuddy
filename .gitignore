@@ -1,0 +1,27 @@
+# Virtual Environment
+venv/
+.venv/
+
+# Python
+__pycache__/
+*.pyc
+
+# Mac
+.DS_Store
+
+# Environment
+.env
+
+# Ignore datasets
+data/csv/
+*.csv
+*.zip
+
+# Ignore databases
+*.db
+
+# Ignore VSCode
+.vscode/
+
+# Keep sample files only
+!data/sample_alerts.csv
